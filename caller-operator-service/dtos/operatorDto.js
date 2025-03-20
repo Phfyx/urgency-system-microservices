@@ -1,5 +1,6 @@
 class OperatorDto {
-    constructor({ name, phone }) {
+    constructor({ name, id }) {
+        this.id = id;
         this.name = name;
         this.validate();
     }
