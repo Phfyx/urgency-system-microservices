@@ -9,7 +9,7 @@ export const getAllTeams = async () => {
 }
 
 export const updateAvailability = async (id, availability) => {
-    return await Team.findByIdAndUpdate(id, { availability})
+    return await Team.findByIdAndUpdate(id, {availability})
 }
 
 export const getAvailableTeam = async () => {
