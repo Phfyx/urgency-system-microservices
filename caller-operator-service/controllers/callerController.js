@@ -1,34 +1,62 @@
-import { createCaller, getAllCallers } from '../repositories/callerRepository.js';
+import { createCaller, getAllCallers, getCallerById } from '../repositories/callerRepository.js';
 import CallerDto from '../dtos/callerDto.js';
 
 
 export const createNewCaller = async (req, res) => {
     try {
-        const { name, phone } = req.body
+        const callerDto = new CallerDto(req.body);
 
-        const newCaller = await createCaller({name,phone});
+        const newCaller = await createCaller({
+            name: callerDto.name,
+            phone: callerDto.phone,
+        });
 
-        res.status(200).json({ message: "Caller create with sucess", caller: newCaller })
+        const responseDto = new CallerDto({
+            id: newCaller._id,
+            name: newCaller.name,
+            phone: newCaller.phone,
+        });
+
+        res.status(201).json({ message: "Caller created with sucess", responseDto })
     } catch (err) {
-        res.status(500).json({ error: err.message })
+        if (err.message.includes("required")) {
+            res.status(400).json({ error: err.message })
+        }
+        res.status(500).json({ error: "Internal server error" })
     }
 }
 
 export const getCallers = async (req, res) => {
     try {
         const callers = await getAllCallers();
-        res.status(200).json(callers)
+
+        const callersDtos = callers.map(caller => new CallerDto({
+            id: caller._id,
+            name: caller.name,
+            phone: caller.phone,
+        }));
+
+        res.status(200).json(callersDtos)
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
 }
 
-export const getCallerById = async (req, res) => {
+export const getCaller= async (req, res) => {
     try {
-        const { id } = req.params
-        const caller = await getCallerById(id);
-        res.status(200).json(caller)
+        const caller = await getCallerById(req.params.id);
+        if (!caller) {
+            return res.status(404).json({ error: "Caller not found" })
+        }
+
+        const callerDto = new CallerDto({
+            id: caller._id,
+            name: caller.name,
+            phone: caller.phone,
+        });
+
+        res.status(200).json(callerDto)
     } catch (err) {
-        res.status(500).json({ error: err.message })
+        res.status(500).json({ error: "Internal server error" })
     }
 }

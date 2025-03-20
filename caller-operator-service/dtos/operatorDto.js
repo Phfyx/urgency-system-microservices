@@ -10,4 +10,5 @@ class OperatorDto {
         }
     }
 }
+
 export default OperatorDto;

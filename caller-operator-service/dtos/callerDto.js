@@ -1,4 +1,4 @@
-export class CallerDto {
+class CallerDto {
     constructor({ id, name, phone }) {
         this.id = id;
         this.name = name;
@@ -7,12 +7,13 @@ export class CallerDto {
     }
 
     validate() {
-        if (!this.name) {
-            throw new Error("Name is required");
+        if (!this.name || this.name.length < 2) {
+            throw new Error("Name must be at least 2 characters long");
         }
-        if (!this.phone) {
-            throw new Error("Phone is required");
+        if (!this.phone || this.phone.length < 10) {
+            throw new Error("Phone must be at least 10 digits");
         }
     }
 }
+
 export default CallerDto;

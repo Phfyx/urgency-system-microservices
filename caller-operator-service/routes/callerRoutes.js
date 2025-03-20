@@ -1,13 +1,13 @@
 import { Router } from "express";
 
-import { createNewCaller, getCallers, getCallerById } from "../controllers/callerController.js";
+import { createNewCaller, getCallers, getCaller } from "../controllers/callerController.js";
 
 
 const callerRouter = Router();
 
 
 callerRouter.get("/callers", getCallers)
-callerRouter.get("/callers/:id", getCallerById)
+callerRouter.get("/callers/:id", getCaller)
 callerRouter.post("/callers", createNewCaller)
 
 
