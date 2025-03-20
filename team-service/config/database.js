@@ -1,10 +1,13 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+import mongoose from 'mongoose';
 
-dotenv.config();
-export const connectDB = () => {
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    process.exit(1);
+  }
+};
 
-    mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("Connecté à la BDD"))
-    .catch(() => console.log("Impossible de se connecter à la BDD"))
-}
+export default connectDB;

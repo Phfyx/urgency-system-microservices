@@ -1,22 +1,19 @@
-import express from "express";
-import { connectDB } from "./config/database.js";
-import dotenv from "dotenv";
-import indexRouter from "./routers/indexRouter.js";
-
-
-
-dotenv.config();
-const { PORT } = process.env
+import express from 'express';
+import connectDB from './config/database.js';
+import indexRouter from './routers/indexRouter.js';
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-connectDB();
-
+// Middleware
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
 
-
+// Routes
 app.use("/api", indexRouter);
 
+// Connect to database
+connectDB();
 
-app.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}`))
+app.listen(PORT, () => {
+  console.log(`Service running on port ${PORT}`);
+});
