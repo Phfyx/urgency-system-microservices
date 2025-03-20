@@ -1,5 +1,5 @@
 class TeamDto {
-    constructor({ id, name, phone }) {
+    constructor({ id, type, availability }) {
         this.id = id;
         this.type = type;
         this.availability = availability;

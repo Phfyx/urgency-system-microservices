@@ -1,8 +1,8 @@
-import { createTeam, getAllTeams, getTeamById } from "../repositories/teamRepository.js";
+import { createTeam, getAllTeams, getAvailableTeam, updateAvailability } from "../repositories/teamRepository.js";
 import TeamDto from "../dtos/teamDto.js";
 
 
-export const createTeam = async (req, res) => {
+export const createNewTeam = async (req, res) => {
     try {
         const teamDto = new TeamDto(req.body);
 
@@ -17,12 +17,12 @@ export const createTeam = async (req, res) => {
             availability: newTeam.availability,
         });
 
-        res.status(200).json({ message: "Team create with sucess", responseDto })
+        res.status(200).json({ message: "Team create with sucess", newTeam })
     } catch (err) {
         if (err.message.includes("required")) {
             res.status(400).json({ error: err.message })
         }
-        res.status(500).json({ error: "Internal server error" })
+        res.status(500).json({ error: err.message })
     }
 }
 
@@ -42,21 +42,38 @@ export const getTeams = async (req, res) => {
     }
 }
 
-export const getTeam = async (req, res) => {
+export const getAvailableTeams = async (req, res) => {
     try {
-        const team = await getTeamById(req.params.id);
+        const team = await getAvailableTeam();
 
         if (!team) {
-            return res.status(404).json({ error: "Operator not found" })
+            return res.status(404).json({ error: "No team available" })
         }
 
         const teamDto = new TeamDto({
-            id:team._id,
+            id: team._id,
             type: team.type,
             availability: team.availability,
         });
 
         res.status(200).json(teamDto)
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+export const updateTeamAvailability = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { availability } = req.body;
+
+        const team = await updateAvailability(id, availability);
+
+        if (!team) {
+            return res.status(404).json({ error: "Team not found" })
+        }
+
+        res.status(200).json({ message: "Team availability updated with sucess" })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
