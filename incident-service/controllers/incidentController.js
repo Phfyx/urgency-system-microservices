@@ -12,14 +12,18 @@ export const createNewIncident = async (req, res) => {
         if (!caller || !operator || !team) {
             throw new Error("Caller, Operator or Team not found");
         }
-        console.log(req.body, caller, operator, team);
+        const incidentDto = new IncidentDto({
+            localisation: localisation,
+            description: description,
+            status: "pending",
+            callerId:callerId,
+            operatorId: operatorId,
+            teamId: team.id,
+            reportedAt: new Date()
+        });
+
         const incident = await createIncident(
-            {localisation,
-            description,
-            callerId,
-            operatorId,
-            teamId: team.id
-            }
+            incidentDto
         );
         await blockTeam(team.id);
         res.status(201).json({ incident });
