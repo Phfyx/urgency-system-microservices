@@ -1,12 +1,11 @@
 import Team from "../models/Team.js"
 
 export const createTeam = async (data) => {
-return await Team.create({...data})
+    return await Team.create({...data})
 }
 
 export const getAllTeams = async () => {
-
-return await Team.find({})
+    return await Team.find({})
 }
 
 export const updateAvailability = async (id, availability) => {

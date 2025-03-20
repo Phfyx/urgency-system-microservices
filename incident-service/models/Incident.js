@@ -26,18 +26,15 @@ const incidentSchema = new Schema({
 
     callerId: {
         type:Schema.Types.ObjectId,
-        required: true,
-        ref: "Caller"
+        required: true
     },
     operatorId: {
         type:Schema.Types.ObjectId,
-        required: true,
-        ref: "Operator"
+        required: true
     },
     teamId: {
         type:Schema.Types.ObjectId,
-        required: true,
-        ref: "Team"
+        required: true
     },
 
 }, {
